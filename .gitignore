@@ -39,8 +39,9 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-# Environment files
-.env
+# Environment files (keep .env placeholder in git; CI overwrites real values)
+.env.local
+.env.production
 
 # Android Studio will place build artifacts here
 /android/app/debug

@@ -13,12 +13,10 @@ workflows:
         PIPER_ENABLED: false
         WAKE_WORD: ultron
     scripts:
-      - cp .env.example .env
-      - echo "OPENROUTER_API_KEY=$OPENROUTER_API_KEY" >> .env
-      - echo "ELEVENLABS_API_KEY=$ELEVENLABS_API_KEY" >> .env
-      - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" >> .env
-      - echo "PIPER_ENABLED=false" >> .env
-      - echo "WAKE_WORD=$WAKE_WORD" >> .env
+      - sed -i '' "s|OPENROUTER_API_KEY=.*|OPENROUTER_API_KEY=$OPENROUTER_API_KEY|" .env
+      - sed -i '' "s|ELEVENLABS_API_KEY=.*|ELEVENLABS_API_KEY=$ELEVENLABS_API_KEY|" .env
+      - sed -i '' "s|GOOGLE_API_KEY=.*|GOOGLE_API_KEY=$GOOGLE_API_KEY|" .env
+      - sed -i '' "s|WAKE_WORD=.*|WAKE_WORD=$WAKE_WORD|" .env
       - flutter pub get
       - cd ios && pod install && cd ..
       - flutter build ios --release --no-codesign
@@ -38,12 +36,10 @@ workflows:
         PIPER_ENABLED: false
         WAKE_WORD: ultron
     scripts:
-      - cp .env.example .env
-      - echo "OPENROUTER_API_KEY=$OPENROUTER_API_KEY" >> .env
-      - echo "ELEVENLABS_API_KEY=$ELEVENLABS_API_KEY" >> .env
-      - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" >> .env
-      - echo "PIPER_ENABLED=false" >> .env
-      - echo "WAKE_WORD=$WAKE_WORD" >> .env
+      - sed -i '' "s|OPENROUTER_API_KEY=.*|OPENROUTER_API_KEY=$OPENROUTER_API_KEY|" .env
+      - sed -i '' "s|ELEVENLABS_API_KEY=.*|ELEVENLABS_API_KEY=$ELEVENLABS_API_KEY|" .env
+      - sed -i '' "s|GOOGLE_API_KEY=.*|GOOGLE_API_KEY=$GOOGLE_API_KEY|" .env
+      - sed -i '' "s|WAKE_WORD=.*|WAKE_WORD=$WAKE_WORD|" .env
       - flutter pub get
       - flutter build apk --release
     artifacts:
