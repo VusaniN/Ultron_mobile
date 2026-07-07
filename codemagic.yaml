@@ -1,6 +1,7 @@
 workflows:
   ios-release:
     name: iOS Release
+    instance_type: mac_mini_m2
     environment:
       flutter: stable
       xcode: latest
@@ -18,6 +19,7 @@ workflows:
       - echo "PIPER_ENABLED=false" >> .env
       - echo "WAKE_WORD=ultron" >> .env
       - flutter pub get
+      - cd ios && pod install && cd ..
       - flutter build ios --release --no-codesign
     artifacts:
       - build/ios/iphoneos/*.app
@@ -25,6 +27,7 @@ workflows:
 
   android-release:
     name: Android Release
+    instance_type: standard
     environment:
       flutter: stable
       vars:

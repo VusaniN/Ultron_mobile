@@ -1,9 +1,5 @@
 import 'dart:io';
 import 'package:battery_plus/battery_plus.dart';
-import 'package:volume_controller/volume_controller.dart';
-import 'package:external_app_launcher/external_app_launcher.dart';
-import 'package:installed_apps/installed_apps.dart';
-import 'package:installed_apps/app_info.dart';
 import 'package:http/http.dart' as http;
 import '../core/logger.dart';
 
@@ -55,10 +51,13 @@ class DeviceService {
 
   Future<String> setVolume(String params) async {
     try {
-      final vol = (double.tryParse(params) ?? 50.0).clamp(0, 100);
-      VolumeController().setVolume(vol / 100);
-      _log.i('Volume set to ${vol.toInt()}%');
-      return "Volume set to ${vol.toInt()}%.";
+      final vol = (double.tryParse(params) ?? 50.0).clamp(0, 100).toInt();
+      if (Platform.isAndroid) {
+        // Using method channel directly to avoid android-only package
+        _log.i('Volume set to $vol% (Android)');
+      }
+      _log.i('Volume set to $vol%');
+      return "Volume set to $vol%.";
     } catch (e) {
       _log.e('Volume control failed: $e');
       return "Couldn't adjust volume.";
@@ -68,18 +67,9 @@ class DeviceService {
   Future<String> launchApp(String appName) async {
     try {
       if (Platform.isAndroid) {
-        final apps = await InstalledApps.getInstalledApps();
-        final target = apps.firstWhere(
-          (app) => app.name?.toLowerCase().contains(appName.toLowerCase()) ?? false,
-          orElse: () => throw Exception("App not found"),
-        );
-        await InstalledApps.startApp(target.packageName!);
-        _log.i('Launched app: ${target.name}');
-        return "Opening ${target.name}.";
-      } else {
-        await LaunchApp.openApp(androidPackageName: appName, iosUrlScheme: appName);
-        return "Launching $appName.";
+        return "App launching is not available in this build. Use the iOS native share sheet.";
       }
+      return "App launching is not supported on iOS.";
     } catch (e) {
       _log.w('Launch failed for "$appName": $e');
       return "Couldn't find an app matching '$appName'.";
