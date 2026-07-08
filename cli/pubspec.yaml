@@ -1,0 +1,4 @@
+name: ultron_cli
+publish_to: none
+environment:
+  sdk: ^3.12.0
