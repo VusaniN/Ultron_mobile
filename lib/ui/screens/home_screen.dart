@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart';
 import '../../models/message.dart';
 import '../../models/persona.dart';
 import '../../providers/chat_provider.dart';
@@ -62,6 +64,26 @@ class _HomeScreenState extends State<HomeScreen>
     _textController.clear();
     final provider = context.read<ChatProvider>();
     await provider.handleTextInput(text);
+  }
+
+  Future<void> _pickFile() async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['txt', 'md', 'csv', 'log', 'json', 'yaml', 'yml', 'xml', 'html', 'htm'],
+      );
+      if (result == null || result.files.isEmpty) return;
+      final file = result.files.first;
+      if (file.path == null) return;
+      final provider = context.read<ChatProvider>();
+      provider.addSystemMessage("Uploading '${file.name}'...");
+      await provider.handleTextInput('read ${file.path}');
+    } catch (e) {
+      if (context.mounted) {
+        final provider = context.read<ChatProvider>();
+        provider.addSystemMessage("File picker error: $e");
+      }
+    }
   }
 
   void _showPersonaSelector(BuildContext context) {
@@ -882,7 +904,17 @@ class _HomeScreenState extends State<HomeScreen>
               maxLines: 1,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
+          CircleAvatar(
+            backgroundColor: const Color(0xFF2A2A4E),
+            radius: 20,
+            child: IconButton(
+              icon: const Icon(Icons.attach_file, color: Colors.white54, size: 18),
+              onPressed: _pickFile,
+              tooltip: 'Upload a document',
+            ),
+          ),
+          const SizedBox(width: 6),
           CircleAvatar(
             backgroundColor: const Color(0xFFFF2A5E),
             radius: 22,
