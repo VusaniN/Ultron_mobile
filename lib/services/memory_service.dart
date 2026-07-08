@@ -98,17 +98,20 @@ class MemoryService {
 
   final Logger _log = Logger('MemoryService');
   final EmbeddingService _embeddings;
+  final String? _storageDir;
   List<MemoryEntry> _entries = [];
   File? _file;
   List<String> _currentSession = [];
   final Map<String, String> _preferences = {};
   int _messageCount = 0;
 
-  MemoryService({required EmbeddingService embeddings}) : _embeddings = embeddings;
+  MemoryService({required EmbeddingService embeddings, String? storageDir})
+    : _embeddings = embeddings,
+      _storageDir = storageDir;
 
   Future<void> init() async {
     try {
-      final dir = await getApplicationDocumentsDirectory();
+      final dir = _storageDir != null ? Directory(_storageDir!) : await getApplicationDocumentsDirectory();
       _file = File('${dir.path}/ultron_memory.json');
       if (await _file!.exists()) {
         final data = await _file!.readAsString();
