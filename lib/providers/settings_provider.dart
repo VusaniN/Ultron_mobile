@@ -9,7 +9,7 @@ class SettingsProvider extends ChangeNotifier {
   final Logger _log = Logger('SettingsProvider');
   final SecureStorage _secure = SecureStorage();
 
-  String _currentModelId = 'openai/gpt-4o-mini';
+  String _currentModelId = 'qwen/qwen3-coder:free';
   String _wakeWord = 'ultron';
   String _voiceId = '21m00Tcm4TlvDq8ikWAM';
   bool _piperEnabled = true;

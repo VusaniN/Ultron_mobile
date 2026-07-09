@@ -44,7 +44,7 @@ class LLMService {
   final Logger _log = Logger('LLMService');
   final SecureStorage _secure = SecureStorage();
   final TokenEstimator _tokenEstimator = TokenEstimator();
-  String _currentModelId = 'openai/gpt-4o-mini';
+  String _currentModelId = 'qwen/qwen3-coder:free';
   final List<String> _modelBlacklist = [];
   final Map<String, int> _modelFailures = {};
   static const int _maxFailuresBeforeBlacklist = 3;

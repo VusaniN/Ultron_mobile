@@ -60,7 +60,7 @@ Future<void> main() async {
   final settings = SettingsProvider();
   await settings.load();
 
-  if (settings.currentModelId != 'openai/gpt-4o-mini') {
+  if (settings.currentModelId != 'qwen/qwen3-coder:free') {
     llm.switchModel(settings.currentModelId);
   }
 
