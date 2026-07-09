@@ -1,6 +1,6 @@
 workflows:
-  ios-release:
-    name: iOS Release
+  ios-altstore:
+    name: iOS AltStore Build
     instance_type: mac_mini_m2
     environment:
       flutter: stable
@@ -20,9 +20,11 @@ workflows:
       - flutter pub get
       - cd ios && pod install && cd ..
       - flutter build ios --release --no-codesign
+      - mkdir -p build/ios/ipa/Payload
+      - cp -r build/ios/iphoneos/Runner.app build/ios/ipa/Payload/
+      - cd build/ios/ipa && zip -r ultron.ipa Payload/
     artifacts:
-      - build/ios/iphoneos/*.app
-      - build/ios/ipa/*.ipa
+      - build/ios/ipa/ultron.ipa
 
   android-release:
     name: Android Release
